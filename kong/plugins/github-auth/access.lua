@@ -108,15 +108,14 @@ local function do_authentication(conf)
         return fail_authentication()
     end
 
-    local headers = {["Authorization"] = "Bearer "..given_password}
+    local headers = {["Authorization"] = "token "..given_password}
     local bdy, response, code = HttpsWGet(conf.github_api_addr.."/orgs/"..conf.organization.."/members/"..given_username, headers)
 
-
-    if not code == 204 then
-        return fail_authentication()
+    if code == 204 then
+        return true
     end
 
-    return true
+    return fail_authentication()
 
 end
 
