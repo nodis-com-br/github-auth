@@ -5,7 +5,7 @@ local kong = kong
 local https = require ('ssl.https')
 local http = require ("socket.http")
 local ltn12 = require ("ltn12")
-local json = require ("json-lua")
+
 
 local realm = 'Basic realm="' .. _KONG._NAME .. '"'
 
