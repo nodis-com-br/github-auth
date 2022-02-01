@@ -15,6 +15,7 @@ description = {
 dependencies = {
     "luasec",
     "luasocket",
+    "ltn12",
     "json-lua"
 }
 

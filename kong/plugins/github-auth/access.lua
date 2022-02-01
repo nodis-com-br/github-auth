@@ -2,10 +2,10 @@ local decode_base64 = ngx.decode_base64
 local re_gmatch = ngx.re.gmatch
 local re_match = ngx.re.match
 local kong = kong
-local https = require ('ssl.https')
-local http = require ("socket.http")
-local ltn12 = require ("ltn12")
-local json = require ("json")
+local https = ssl.https
+local http = socket.http
+local ltn12 = ltn12
+local json = json-lua
 
 local realm = 'Basic realm="' .. _KONG._NAME .. '"'
 
