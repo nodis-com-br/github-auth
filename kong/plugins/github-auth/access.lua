@@ -5,7 +5,7 @@ local kong = kong
 local https = require ('ssl.https')
 local http = require ("socket.http")
 local ltn12 = require ("ltn12")
-local json = require ("lua-cjson")
+local json = require ("cjson.safe")
 
 
 local _M = {}
@@ -107,8 +107,7 @@ local function do_authentication(conf)
     end
 
     local headers = {["Authorization"] = "token " .. given_password}
-
-    local token_type = given_password.sub(3)
+    local token_type = string.sub(given_password, 1, 3)
 
     if token_type == "ghp" then
         local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization .. "/members/" .. given_username, headers)
@@ -118,7 +117,7 @@ local function do_authentication(conf)
 
     elseif token_type == "ghs" then
         local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization, headers)
-        if code == 204 then
+        if given_username == "github-app" and json.decode(response)['plan'] then
             return true
         end
     end
