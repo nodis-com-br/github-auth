@@ -115,8 +115,6 @@ local function do_authentication(conf)
             return true
         end
 
-    kong.log.err("TOKEN_TYPE: ", token_type)
-
     elseif token_type == "ghs" then
 
         if given_username == "github-app"  then
@@ -127,13 +125,11 @@ local function do_authentication(conf)
         else
             local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/repos/" .. conf.organization .. "/" .. given_username, headers)
             local r = json.decode(response)
-
-            kong.log.err("ACTION_AUTH", r.private, r.owner.login, conf.organization)
-
             if r.private and r.owner.login == conf.organization then
                 return true
             end
         end
+
     end
 
     return fail_authentication()
