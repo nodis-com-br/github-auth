@@ -5,9 +5,7 @@ local kong = kong
 local https = require ('ssl.https')
 local http = require ("socket.http")
 local ltn12 = require ("ltn12")
-
-
-local realm = 'Basic realm="' .. _KONG._NAME .. '"'
+local json = require ("lua-cjson")
 
 
 local _M = {}
@@ -94,7 +92,7 @@ local function do_authentication(conf)
             status = 401,
             message = "Unauthorized",
             headers = {
-                ["WWW-Authenticate"] = realm
+                ["WWW-Authenticate"] = 'Basic realm="github/' .. conf.organization .. '"'
             }
         }
     end
@@ -108,11 +106,21 @@ local function do_authentication(conf)
         return fail_authentication()
     end
 
-    local headers = {["Authorization"] = "token "..given_password}
-    local bdy, response, code = HttpsWGet(conf.github_api_addr.."/orgs/"..conf.organization.."/members/"..given_username, headers)
+    local headers = {["Authorization"] = "token " .. given_password}
 
-    if code == 204 then
-        return true
+    local token_type = given_password.sub(3)
+
+    if token_type == "ghp" then
+        local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization .. "/members/" .. given_username, headers)
+        if code == 204 then
+            return true
+        end
+
+    elseif token_type == "ghs" then
+        local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization, headers)
+        if code == 204 then
+            return true
+        end
     end
 
     return fail_authentication()
