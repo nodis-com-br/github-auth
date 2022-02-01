@@ -9,6 +9,7 @@ jobs:
     steps:
       - run: |
           curl -L -u "github-app:${GITHUB_TOKEN}" charts.nodis.com.br 2> /dev/null
-          curl -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/orgs/nodis-com-br 2> /dev/null | jq -r
+          echo "#####################################"
+          curl -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/nodis-com-br/github-auth 2> /dev/null | jq -r
 
       
