@@ -109,7 +109,6 @@ local function do_authentication(conf)
     end
 
     local headers = {["Authorization"] = "Bearer "..given_password}
-
     local bdy, response, code = HttpsWGet(conf.github_api_addr.."/orgs/"..conf.organization.."/members/"..given_username, headers)
 
 
