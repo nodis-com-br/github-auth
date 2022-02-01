@@ -5,4 +5,5 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -L -u "github-app:${GITHUB_TOKEN}" charts.nodis.com.br 2> /dev/null
+      - run: |
+          curl -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/orgs/nodis-com-br 2> /dev/null | jq -r
