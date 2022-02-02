@@ -29,7 +29,7 @@ local function HttpsWGet(strURL, headers, timeout)
     }
        -- Mimick luup.inet.get return values
        if bdy == 1 then bdy = 0 else bdy = 1 end
-       return bdy,table.concat(result),cde
+       return table.concat(result),cde
 
 end
 
@@ -110,20 +110,23 @@ local function do_authentication(conf)
     local token_type = string.sub(given_password, 1, 3)
 
     if token_type == "ghp" then
-        local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization .. "/members/" .. given_username, headers)
-        if code == 204 then
+
+        local response1, code1 = HttpsWGet(conf.github_api_addr .. "/user", headers)
+        local response2, code2 = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization .. "/members/" .. given_username, headers)
+
+        if json.decode(response1)["login"] == given_username and code2 == 204 then
             return true
         end
 
     elseif token_type == "ghs" then
 
-        if given_username == "github-app"  then
-            local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization, headers)
+        if given_username == "x-access-token"  then
+            local response, code = HttpsWGet(conf.github_api_addr .. "/orgs/" .. conf.organization, headers)
             if json.decode(response)['plan'] then
                 return true
             end
         else
-            local bdy, response, code = HttpsWGet(conf.github_api_addr .. "/repos/" .. conf.organization .. "/" .. given_username, headers)
+            local response, code = HttpsWGet(conf.github_api_addr .. "/repos/" .. conf.organization .. "/" .. given_username, headers)
             local r = json.decode(response)
             if r.private and r.owner.login == conf.organization then
                 return true
