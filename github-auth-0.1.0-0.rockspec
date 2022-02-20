@@ -24,6 +24,7 @@ build = {
     modules = {
         ["kong.plugins.github-auth.access"] = "kong/plugins/github-auth/access.lua",
         ["kong.plugins.github-auth.handler"] = "kong/plugins/github-auth/handler.lua",
+        ["kong.plugins.github-auth.exceptions"] = "kong/plugins/github-auth/exceptions.lua",
         ["kong.plugins.github-auth.schema"] = "kong/plugins/github-auth/schema.lua",
     }
 }

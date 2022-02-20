@@ -27,9 +27,11 @@ local function HttpsWGet(strURL, headers, timeout)
         verify = "none",
         sink=ltn12.sink.table(result)
     }
-       -- Mimick luup.inet.get return values
-       if bdy == 1 then bdy = 0 else bdy = 1 end
-       return table.concat(result),cde
+
+    -- Mimick luup.inet.get return values
+   if bdy == 1 then bdy = 0 else bdy = 1 end
+   return table.concat(result),cde
+
 
 end
 
@@ -67,6 +69,7 @@ local function retrieve_credentials(header_name, conf)
 
                 username = basic_parts[1]
                 password = basic_parts[2]
+
             end
         end
     end
@@ -76,6 +79,7 @@ local function retrieve_credentials(header_name, conf)
     end
 
     return username, password
+
 end
 
 
