@@ -1,7 +1,7 @@
 package = "github-auth"
 version = "0.1.0-0"
 source = {
-    url = "git://github.com/nodis-com-br/github-auth",
+    url = "https://github.com/nodis-com-br/github-auth",
     dir = "github-auth"
 }
 description = {
